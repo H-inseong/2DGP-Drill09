@@ -1,11 +1,10 @@
 from pico2d import *
-
 from grass import Grass
 from boy import Boy
 
+import game_world
 
 # Game object class here
-
 
 def handle_events():
     global running
@@ -19,39 +18,37 @@ def handle_events():
         else:
             boy.handle_event(event)
 
-
 def reset_world():
     global running
     global world
     global boy
 
     running = True
-    world = []
 
-    grass = Grass()
-    world.append(grass)
+    back_grass = Grass(40)
+    game_world.add_object(back_grass, 0)
+
+    front_grass = Grass(20)
+    game_world.add_object(front_grass, 2)
 
     boy = Boy()
-    world.append(boy)
-
-
+    game_world.add_object(boy, 1)
 
 def update_world():
-    for o in world:
-        o.update()
-    pass
+    game_world.update()
+
 
 
 def render_world():
     clear_canvas()
-    for o in world:
-        o.draw()
+    game_world.render()
     update_canvas()
-
 
 open_canvas()
 reset_world()
+
 # game loop
+
 while running:
     handle_events()
     update_world()
